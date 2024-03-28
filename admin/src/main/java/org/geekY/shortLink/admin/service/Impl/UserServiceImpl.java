@@ -29,7 +29,7 @@ import static org.geekY.shortLink.admin.common.enums.UserErrorCodeEnum.USER_SAVE
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
     private final RBloomFilter<String>  userRegisterCachePenetrationBloomFilter;
     @Override
-    public UserRespDTO getUserByUserName(String username) {
+    public UserRespDTO getUserByUsername(String username) {
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class).eq(UserDO::getUsername, username);
         UserDO userDO = baseMapper.selectOne(queryWrapper);
         if (userDO == null) {
@@ -47,8 +47,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return !userRegisterCachePenetrationBloomFilter.contains(username);
     }
 
+
+
+
     @Override
-    public void registerUser(UserRegisterReqDTO requestParam) {
+    public void register(UserRegisterReqDTO requestParam) {
         if(!hasUsername(requestParam.getUsername())){
             throw new ClientException(USER_NAME_EXIST);
         }
